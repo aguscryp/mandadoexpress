@@ -14,11 +14,11 @@
         :root {
             --brand-yellow: #FFC107;
             --brand-yellow-bright: #FFD700;
-            --yellow-glow: rgba(255, 215, 0, 0.35);
+            --yellow-glow: rgba(255, 215, 0, 0.2);
             --bg-black: #050608;
-            --card-dark: rgba(14, 16, 22, 0.92);
+            --card-dark: #0E1016;
             --input-dark: #12151C;
-            --border-dark: rgba(255, 215, 0, 0.2);
+            --border-dark: rgba(255, 215, 0, 0.25);
             --text-main: #FFFFFF;
             --text-sub: #9EA3B2;
         }
@@ -42,140 +42,119 @@
             position: relative;
         }
 
-        /* Canvas de Partículas en Movimiento */
-        #bgCanvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
-            pointer-events: none;
-        }
-
-        /* Resplandores Neón de Fondo */
+        /* Luces Neón Estáticas de Fondo (Sin animación pesada para no tildar el cel) */
         .glow-orb {
             position: absolute;
             border-radius: 50%;
-            filter: blur(120px);
+            filter: blur(80px);
             z-index: 1;
             pointer-events: none;
         }
         .glow-orb-1 {
-            width: 380px;
-            height: 380px;
+            width: 280px;
+            height: 280px;
             background: var(--yellow-glow);
-            top: -60px;
-            left: -60px;
+            top: -40px;
+            left: -40px;
         }
         .glow-orb-2 {
-            width: 320px;
-            height: 320px;
-            background: rgba(255, 193, 7, 0.15);
-            bottom: -60px;
-            right: -60px;
+            width: 240px;
+            height: 240px;
+            background: rgba(255, 193, 7, 0.1);
+            bottom: -40px;
+            right: -40px;
         }
 
-        /* Tarjeta Contenedora Principal */
+        /* Tarjeta Principal Ligera */
         .login-card {
             position: relative;
             z-index: 10;
             background: var(--card-dark);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
             width: 100%;
-            max-width: 480px;
-            padding: 42px 36px;
-            border-radius: 28px;
+            max-width: 440px;
+            padding: 35px 28px;
+            border-radius: 24px;
             border: 1px solid var(--border-dark);
-            box-shadow: 
-                0 30px 60px rgba(0, 0, 0, 0.95),
-                inset 0 1px 0 rgba(255, 255, 255, 0.1),
-                0 0 35px rgba(255, 215, 0, 0.12);
-            transition: border-color 0.4s ease, box-shadow 0.4s ease;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8), 0 0 20px rgba(255, 215, 0, 0.08);
         }
 
-        .login-card:hover {
-            border-color: rgba(255, 215, 0, 0.4);
-            box-shadow: 
-                0 30px 60px rgba(0, 0, 0, 0.95),
-                inset 0 1px 0 rgba(255, 255, 255, 0.15),
-                0 0 45px rgba(255, 215, 0, 0.2);
-        }
-
-        /* Header del Logo Real */
+        /* Header con Marco de Logo */
         .logo-header {
             text-align: center;
-            margin-bottom: 28px;
+            margin-bottom: 24px;
             display: flex;
             flex-direction: column;
             align-items: center;
         }
 
-        .logo-img {
-            width: 100%;
-            max-width: 280px;
-            height: auto;
-            margin-bottom: 10px;
-            filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.3));
+        .logo-frame {
+            width: 140px;
+            height: 140px;
+            border-radius: 20px;
+            padding: 3px;
+            background: linear-gradient(135deg, var(--brand-yellow-bright), transparent, var(--brand-yellow));
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.25);
+            margin-bottom: 8px;
         }
 
-        /* Selector de Rol Dinámico */
+        .logo-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 17px;
+            display: block;
+        }
+
+        /* Selector de Rol */
         .role-tabs {
             display: flex;
             background: var(--input-dark);
-            padding: 5px;
-            border-radius: 16px;
+            padding: 4px;
+            border-radius: 14px;
             border: 1px solid var(--border-dark);
-            margin-bottom: 26px;
+            margin-bottom: 24px;
             gap: 4px;
         }
 
         .role-tab {
             flex: 1;
-            padding: 11px 4px;
+            padding: 10px 2px;
             border: none;
             background: transparent;
             color: var(--text-sub);
-            font-size: 0.8rem;
+            font-size: 0.78rem;
             font-weight: 700;
-            border-radius: 12px;
+            border-radius: 10px;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 5px;
+            gap: 4px;
         }
 
         .role-tab i {
-            font-size: 1.15rem;
-        }
-
-        .role-tab:hover {
-            color: var(--text-main);
+            font-size: 1.1rem;
         }
 
         .role-tab.active {
             background: linear-gradient(135deg, var(--brand-yellow-bright), var(--brand-yellow));
             color: #000000;
-            box-shadow: 0 5px 18px var(--yellow-glow);
-            transform: translateY(-1px);
+            box-shadow: 0 4px 12px var(--yellow-glow);
         }
 
-        /* Campos de Entrada */
+        /* Campos de Formulario */
         .input-group {
-            margin-bottom: 20px;
+            margin-bottom: 18px;
         }
 
         .input-group label {
             display: block;
-            margin-bottom: 8px;
-            font-size: 0.78rem;
+            margin-bottom: 6px;
+            font-size: 0.75rem;
             font-weight: 700;
             color: var(--text-sub);
             text-transform: uppercase;
-            letter-spacing: 0.8px;
+            letter-spacing: 0.5px;
         }
 
         .input-field {
@@ -186,127 +165,96 @@
 
         .input-field i.icon-left {
             position: absolute;
-            left: 18px;
+            left: 16px;
             color: var(--text-sub);
-            font-size: 1.05rem;
-            transition: all 0.3s ease;
+            font-size: 1rem;
         }
 
         .input-field input {
             width: 100%;
-            padding: 15px 48px 15px 52px;
+            padding: 14px 44px 14px 48px;
             background-color: var(--input-dark);
             border: 1px solid var(--border-dark);
-            border-radius: 14px;
+            border-radius: 12px;
             color: var(--text-main);
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             outline: none;
-            transition: all 0.3s ease;
         }
 
         .input-field input:focus {
             border-color: var(--brand-yellow-bright);
-            box-shadow: 0 0 20px var(--yellow-glow), inset 0 0 10px rgba(255, 215, 0, 0.1);
             background-color: #171B24;
-        }
-
-        .input-field input:focus ~ i.icon-left,
-        .input-field input:focus ~ i.toggle-password {
-            color: var(--brand-yellow-bright);
         }
 
         .toggle-password {
             position: absolute;
-            right: 18px;
+            right: 16px;
             color: var(--text-sub);
             cursor: pointer;
-            font-size: 1.05rem;
-            transition: color 0.3s ease;
+            font-size: 1rem;
         }
 
-        .toggle-password:hover {
-            color: var(--text-main);
-        }
-
-        /* Opciones de Login */
+        /* Opciones */
         .form-actions {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 26px;
-            font-size: 0.85rem;
+            margin-bottom: 22px;
+            font-size: 0.8rem;
         }
 
         .remember-check {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             color: var(--text-sub);
             cursor: pointer;
-            user-select: none;
         }
 
         .remember-check input[type="checkbox"] {
             accent-color: var(--brand-yellow);
-            width: 17px;
-            height: 17px;
-            cursor: pointer;
+            width: 16px;
+            height: 16px;
         }
 
         .forgot-link {
             color: var(--brand-yellow-bright);
             text-decoration: none;
             font-weight: 700;
-            transition: opacity 0.2s;
         }
 
-        .forgot-link:hover {
-            opacity: 0.8;
-            text-decoration: underline;
-        }
-
-        /* Botón de Envío Principal */
+        /* Botón de Ingreso */
         .btn-primary {
             width: 100%;
-            padding: 16px;
+            padding: 14px;
             background: linear-gradient(135deg, var(--brand-yellow-bright) 0%, var(--brand-yellow) 100%);
             color: #000000;
             border: none;
-            border-radius: 14px;
-            font-size: 1rem;
+            border-radius: 12px;
+            font-size: 0.95rem;
             font-weight: 800;
-            letter-spacing: 0.5px;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 8px 25px var(--yellow-glow);
+            box-shadow: 0 6px 18px var(--yellow-glow);
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 12px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 32px rgba(255, 215, 0, 0.5);
-            background: #FFE033;
+            gap: 10px;
         }
 
         .btn-primary:active {
-            transform: translateY(0);
+            transform: scale(0.98);
         }
 
-        /* Divisor Social */
+        /* Divisor */
         .divider {
             display: flex;
             align-items: center;
             text-align: center;
-            margin: 26px 0;
+            margin: 22px 0;
             color: var(--text-sub);
-            font-size: 0.72rem;
+            font-size: 0.7rem;
             text-transform: uppercase;
-            letter-spacing: 1.2px;
+            letter-spacing: 1px;
             font-weight: 700;
         }
 
@@ -318,42 +266,34 @@
         }
 
         .divider span {
-            padding: 0 12px;
+            padding: 0 10px;
         }
 
-        /* Botones de Redes Sociales */
+        /* Redes Sociales */
         .social-login {
             display: flex;
-            gap: 12px;
+            gap: 10px;
         }
 
         .social-btn {
             flex: 1;
-            padding: 11px;
+            padding: 10px;
             background-color: var(--input-dark);
             border: 1px solid var(--border-dark);
-            border-radius: 14px;
+            border-radius: 12px;
             color: var(--text-main);
-            font-size: 1.15rem;
+            font-size: 1.1rem;
             cursor: pointer;
-            transition: all 0.3s ease;
             display: flex;
             justify-content: center;
             align-items: center;
         }
 
-        .social-btn:hover {
-            border-color: var(--brand-yellow-bright);
-            background-color: #1A1E29;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
-        }
-
-        /* Footer de Registro */
+        /* Footer */
         .signup-prompt {
             text-align: center;
-            margin-top: 28px;
-            font-size: 0.88rem;
+            margin-top: 24px;
+            font-size: 0.85rem;
             color: var(--text-sub);
         }
 
@@ -361,44 +301,39 @@
             color: var(--brand-yellow-bright);
             text-decoration: none;
             font-weight: 800;
-            margin-left: 5px;
-        }
-
-        .signup-prompt a:hover {
-            text-decoration: underline;
+            margin-left: 4px;
         }
 
         @media (max-width: 480px) {
-            .login-card {
-                padding: 34px 22px;
-                border-radius: 22px;
+            body {
+                padding: 12px;
             }
-            .role-tab {
-                font-size: 0.72rem;
-                padding: 9px 2px;
+            .login-card {
+                padding: 28px 18px;
+            }
+            .logo-frame {
+                width: 120px;
+                height: 120px;
             }
         }
     </style>
 </head>
 <body>
 
-    <!-- Partículas Dinámicas en Movimiento -->
-    <canvas id="bgCanvas"></canvas>
-
-    <!-- Luces de Fondo Neón -->
+    <!-- Luces de Ambiente (Estáticas para máximo rendimiento) -->
     <div class="glow-orb glow-orb-1"></div>
     <div class="glow-orb glow-orb-2"></div>
 
-    <!-- Tarjeta Principal -->
     <div class="login-card">
         
-        <!-- HEADER CON LA IMAGEN DE TU LOGO OFICIAL -->
+        <!-- LOGO OFICIAL -->
         <div class="logo-header">
-            <!-- Guarda la imagen de tu logo en la misma carpeta con el nombre "logo.png" -->
-            <img src="logo.png" alt="Mandado Express Logo" class="logo-img">
+            <div class="logo-frame">
+                <img src="logo.png" alt="Mandado Express Logo" class="logo-img">
+            </div>
         </div>
 
-        <!-- Selector de Rol (Cliente, Repartidor, Comercio) -->
+        <!-- Selector de Rol -->
         <div class="role-tabs">
             <button type="button" class="role-tab active" onclick="setRole('cliente')">
                 <i class="fa-solid fa-bag-shopping"></i>
@@ -414,7 +349,7 @@
             </button>
         </div>
 
-        <!-- Formulario de Acceso -->
+        <!-- Formulario -->
         <form id="loginForm" onsubmit="submitLogin(event)">
             <input type="hidden" id="selectedRole" value="cliente">
 
@@ -440,7 +375,7 @@
                     <input type="checkbox" id="remember">
                     <span>Recordarme</span>
                 </label>
-                <a href="#" class="forgot-link">¿Olvidaste tu contraseña?</a>
+                <a href="#" class="forgot-link">¿Olvidaste la clave?</a>
             </div>
 
             <button type="submit" class="btn-primary" id="btnSubmit">
@@ -449,27 +384,24 @@
             </button>
         </form>
 
-        <!-- Divisor Social -->
         <div class="divider">
             <span>O accede con</span>
         </div>
 
-        <!-- Botones Redes Sociales -->
         <div class="social-login">
-            <button class="social-btn" title="Google"><i class="fa-brands fa-google"></i></button>
-            <button class="social-btn" title="Apple"><i class="fa-brands fa-apple"></i></button>
-            <button class="social-btn" title="Facebook"><i class="fa-brands fa-facebook-f"></i></button>
+            <button type="button" class="social-btn"><i class="fa-brands fa-google"></i></button>
+            <button type="button" class="social-btn"><i class="fa-brands fa-apple"></i></button>
+            <button type="button" class="social-btn"><i class="fa-brands fa-facebook-f"></i></button>
         </div>
 
-        <!-- Enlace de Registro -->
         <div class="signup-prompt">
             ¿Aún no formas parte? 
-            <a href="#" id="signupLink">Crea tu cuenta</a>
+            <a href="#">Crea tu cuenta</a>
         </div>
 
     </div>
 
-    <!-- Script de Interactividad y Fondo Animado -->
+    <!-- Script súper liviano de funciones básicas -->
     <script>
         function setRole(role) {
             const tabs = document.querySelectorAll('.role-tab');
@@ -512,57 +444,8 @@
             const role = document.getElementById('selectedRole').value;
             const email = document.getElementById('email').value;
 
-            alert(`Accediendo a Mandado Express como [${role.toUpperCase()}]: ${email}`);
+            alert(`Ingresando a Mandado Express [${role.toUpperCase()}]: ${email}`);
         }
-
-        // Fondo Dinámico con Partículas Neón
-        const canvas = document.getElementById('bgCanvas');
-        const ctx = canvas.getContext('2d');
-
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-        resizeCanvas();
-        window.addEventListener('resize', resizeCanvas);
-
-        const particles = [];
-        const particleCount = 40;
-
-        for (let i = 0; i < particleCount; i++) {
-            particles.push({
-                x: Math.random() * canvas.width,
-                y: Math.random() * canvas.height,
-                radius: Math.random() * 2 + 1,
-                vx: (Math.random() - 0.5) * 0.5,
-                vy: (Math.random() - 0.5) * 0.5,
-                alpha: Math.random() * 0.5 + 0.2
-            });
-        }
-
-        function animateParticles() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            particles.forEach(p => {
-                p.x += p.vx;
-                p.y += p.vy;
-
-                if (p.x < 0) p.x = canvas.width;
-                if (p.x > canvas.width) p.x = 0;
-                if (p.y < 0) p.y = canvas.height;
-                if (p.y > canvas.height) p.y = 0;
-
-                ctx.beginPath();
-                ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(255, 215, 0, ${p.alpha})`;
-                ctx.shadowBlur = 8;
-                ctx.shadowColor = '#FFD700';
-                ctx.fill();
-            });
-
-            requestAnimationFrame(animateParticles);
-        }
-        animateParticles();
     </script>
 </body>
 </html>
