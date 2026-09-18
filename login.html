@@ -2,7 +2,8 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <!-- Viewport accesible: permite zoom y desplazamiento fluido en móviles -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mandado Express | Acceso Oficial</title>
     
     <!-- Google Fonts: Plus Jakarta Sans & Montserrat -->
@@ -12,7 +13,7 @@
         :root {
             --brand-yellow: #FFC107;
             --brand-yellow-bright: #FFD700;
-            --brand-yellow-glow: rgba(255, 215, 0, 0.25);
+            --brand-yellow-glow: rgba(255, 215, 0, 0.2);
             --bg-black: #050608;
             --card-dark: #0D0F15;
             --input-dark: #13161F;
@@ -27,22 +28,26 @@
             padding: 0;
             box-sizing: border-box;
             font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-            -webkit-tap-highlight-color: transparent;
+        }
+
+        html, body {
+            width: 100%;
+            min-height: 100vh;
+            background-color: var(--bg-black);
+            color: var(--text-main);
+            overflow-x: auto; /* Permite desplazamiento horizontal si el contenido lo requiere */
+            overflow-y: auto; /* Desplazamiento vertical fluido en celulares */
         }
 
         body {
-            background-color: var(--bg-black);
-            color: var(--text-main);
-            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 20px;
+            padding: 20px 15px;
             position: relative;
-            overflow-x: hidden;
         }
 
-        /* Luces Neón de Ambiente */
+        /* Luces Neón de Ambiente Estáticas */
         .glow-orb {
             position: absolute;
             border-radius: 50%;
@@ -50,77 +55,65 @@
             z-index: 1;
         }
         .glow-orb-1 {
-            width: 300px;
-            height: 300px;
+            width: 280px;
+            height: 280px;
             background: radial-gradient(circle, rgba(255, 215, 0, 0.12) 0%, transparent 70%);
             top: -20px;
             left: -20px;
         }
         .glow-orb-2 {
-            width: 300px;
-            height: 300px;
+            width: 280px;
+            height: 280px;
             background: radial-gradient(circle, rgba(255, 193, 7, 0.08) 0%, transparent 70%);
             bottom: -20px;
             right: -20px;
         }
 
-        /* Tarjeta Principal */
+        /* Tarjeta Contenedora Adaptable */
         .login-card {
             position: relative;
             z-index: 10;
             background: var(--card-dark);
             width: 100%;
             max-width: 440px;
-            padding: 40px 30px;
-            border-radius: 28px;
+            margin: auto;
+            padding: 35px 25px;
+            border-radius: 24px;
             border: 1px solid var(--border-dark);
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.9), 0 0 30px rgba(255, 215, 0, 0.05);
-            animation: fadeIn 0.5s ease-out;
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.9);
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(12px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Header e Icono de Repartidor en Moto */
+        /* Encabezado */
         .brand-header {
             text-align: center;
-            margin-bottom: 28px;
+            margin-bottom: 26px;
             display: flex;
             flex-direction: column;
             align-items: center;
         }
 
         .moto-badge {
-            width: 88px;
-            height: 88px;
+            width: 80px;
+            height: 80px;
             background: linear-gradient(135deg, rgba(255, 215, 0, 0.12), rgba(255, 193, 7, 0.03));
             border: 1px solid var(--border-active);
-            border-radius: 24px;
+            border-radius: 22px;
             display: flex;
             justify-content: center;
             align-items: center;
-            margin-bottom: 16px;
-            box-shadow: 0 0 25px var(--brand-yellow-glow);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .moto-badge:hover {
-            transform: scale(1.05) rotate(-2deg);
-            box-shadow: 0 0 35px rgba(255, 215, 0, 0.4);
+            margin-bottom: 14px;
+            box-shadow: 0 0 20px var(--brand-yellow-glow);
         }
 
         .moto-badge svg {
-            width: 54px;
-            height: 54px;
+            width: 48px;
+            height: 48px;
             fill: var(--brand-yellow-bright);
-            filter: drop-shadow(0 2px 10px rgba(255, 215, 0, 0.5));
         }
 
         .brand-title {
             font-family: 'Montserrat', sans-serif;
-            font-size: 1.9rem;
+            font-size: 1.85rem;
             font-weight: 900;
             font-style: italic;
             letter-spacing: -0.5px;
@@ -129,28 +122,29 @@
         }
 
         .brand-title span {
+            color: var(--brand-yellow-bright);
             background: linear-gradient(180deg, #FFE033 0%, #FFC107 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
         .brand-subtitle {
-            font-size: 0.75rem;
+            font-size: 0.72rem;
             color: var(--text-sub);
             font-weight: 700;
-            letter-spacing: 2.5px;
+            letter-spacing: 2px;
             text-transform: uppercase;
             margin-top: 4px;
         }
 
-        /* Selector de Rol Profesional */
+        /* Selector de Rol */
         .role-section-label {
             font-size: 0.72rem;
             font-weight: 800;
             color: var(--text-sub);
             text-transform: uppercase;
             letter-spacing: 1px;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             display: block;
         }
 
@@ -158,61 +152,48 @@
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             background: var(--input-dark);
-            padding: 6px;
-            border-radius: 20px;
+            padding: 5px;
+            border-radius: 18px;
             border: 1px solid var(--border-dark);
-            margin-bottom: 26px;
+            margin-bottom: 24px;
             gap: 6px;
         }
 
         .role-tab {
-            padding: 12px 4px;
+            padding: 10px 2px;
             border: 1px solid transparent;
             background: transparent;
             color: var(--text-sub);
-            font-size: 0.78rem;
+            font-size: 0.75rem;
             font-weight: 700;
-            border-radius: 14px;
+            border-radius: 12px;
             cursor: pointer;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 8px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            gap: 6px;
         }
 
         .role-icon-box {
-            width: 36px;
-            height: 36px;
-            border-radius: 11px;
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
             background: rgba(255, 255, 255, 0.04);
-            transition: all 0.3s ease;
         }
 
         .role-tab svg {
-            width: 20px;
-            height: 20px;
+            width: 18px;
+            height: 18px;
             fill: var(--text-sub);
-            transition: fill 0.3s ease;
-        }
-
-        .role-tab:hover .role-icon-box {
-            background: rgba(255, 215, 0, 0.1);
-        }
-
-        .role-tab:hover svg {
-            fill: var(--brand-yellow-bright);
         }
 
         .role-tab.active {
             color: #000000;
             background: linear-gradient(135deg, var(--brand-yellow-bright), var(--brand-yellow));
-            box-shadow: 0 6px 18px var(--brand-yellow-glow);
-            border-color: rgba(255, 255, 255, 0.2);
-            transform: translateY(-2px);
+            box-shadow: 0 4px 14px var(--brand-yellow-glow);
         }
 
         .role-tab.active .role-icon-box {
@@ -225,13 +206,13 @@
 
         /* Formulario */
         .input-group {
-            margin-bottom: 20px;
+            margin-bottom: 18px;
         }
 
         .input-group label {
             display: block;
-            margin-bottom: 8px;
-            font-size: 0.75rem;
+            margin-bottom: 6px;
+            font-size: 0.72rem;
             font-weight: 700;
             color: var(--text-sub);
             text-transform: uppercase;
@@ -246,40 +227,31 @@
 
         .input-field svg.icon-left {
             position: absolute;
-            left: 16px;
+            left: 14px;
             width: 18px;
             height: 18px;
             fill: var(--text-sub);
-            transition: fill 0.3s ease;
         }
 
         .input-field input {
             width: 100%;
-            padding: 15px 44px 15px 48px;
+            padding: 14px 42px 14px 44px;
             background-color: var(--input-dark);
             border: 1px solid var(--border-dark);
-            border-radius: 14px;
+            border-radius: 12px;
             color: var(--text-main);
-            font-size: 0.95rem;
+            font-size: 0.92rem;
             outline: none;
-            -webkit-appearance: none;
-            transition: all 0.3s ease;
         }
 
         .input-field input:focus {
             border-color: var(--brand-yellow-bright);
-            box-shadow: 0 0 15px var(--brand-yellow-glow);
             background-color: #171A24;
-        }
-
-        .input-field input:focus + .icon-left,
-        .input-field input:focus ~ svg {
-            fill: var(--brand-yellow-bright);
         }
 
         .toggle-btn {
             position: absolute;
-            right: 14px;
+            right: 12px;
             background: none;
             border: none;
             cursor: pointer;
@@ -289,14 +261,9 @@
         }
 
         .toggle-btn svg {
-            width: 20px;
-            height: 20px;
+            width: 18px;
+            height: 18px;
             fill: var(--text-sub);
-            transition: fill 0.3s ease;
-        }
-
-        .toggle-btn:hover svg {
-            fill: var(--text-main);
         }
 
         /* Opciones */
@@ -304,95 +271,52 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 24px;
-            font-size: 0.82rem;
+            margin-bottom: 22px;
+            font-size: 0.8rem;
         }
 
         .remember-check {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             color: var(--text-sub);
             cursor: pointer;
-            user-select: none;
         }
 
         .remember-check input[type="checkbox"] {
             accent-color: var(--brand-yellow);
-            width: 17px;
-            height: 17px;
-            border-radius: 4px;
+            width: 16px;
+            height: 16px;
         }
 
         .forgot-link {
             color: var(--brand-yellow-bright);
             text-decoration: none;
             font-weight: 700;
-            transition: opacity 0.2s ease;
-        }
-
-        .forgot-link:hover {
-            opacity: 0.8;
-            text-decoration: underline;
         }
 
         /* Botón de Enviar */
         .btn-primary {
             width: 100%;
-            padding: 16px;
+            padding: 15px;
             background: linear-gradient(135deg, var(--brand-yellow-bright), var(--brand-yellow));
             color: #000000;
             border: none;
-            border-radius: 14px;
-            font-size: 0.98rem;
+            border-radius: 12px;
+            font-size: 0.95rem;
             font-weight: 800;
             cursor: pointer;
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 10px;
-            box-shadow: 0 8px 22px var(--brand-yellow-glow);
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn-primary::after {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(60deg, transparent, rgba(255, 255, 255, 0.35), transparent);
-            transform: rotate(30deg);
-            transition: transform 0.6s ease;
-            opacity: 0;
-        }
-
-        .btn-primary:hover::after {
-            opacity: 1;
-            transform: rotate(30deg) translate(100%, 0);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 28px rgba(255, 215, 0, 0.45);
-        }
-
-        .btn-primary:active {
-            transform: translateY(0);
+            gap: 8px;
+            box-shadow: 0 6px 18px var(--brand-yellow-glow);
         }
 
         .btn-primary svg {
             width: 18px;
             height: 18px;
             fill: #000000;
-            transition: transform 0.3s ease;
-        }
-
-        .btn-primary:hover svg {
-            transform: translateX(4px);
         }
 
         /* Divisor */
@@ -400,11 +324,11 @@
             display: flex;
             align-items: center;
             text-align: center;
-            margin: 24px 0;
+            margin: 22px 0;
             color: var(--text-sub);
             font-size: 0.7rem;
             text-transform: uppercase;
-            letter-spacing: 1.2px;
+            letter-spacing: 1px;
             font-weight: 700;
         }
 
@@ -415,45 +339,38 @@
         }
 
         .divider span {
-            padding: 0 12px;
+            padding: 0 10px;
         }
 
         /* Redes Sociales */
         .social-login {
             display: flex;
-            gap: 12px;
+            gap: 10px;
         }
 
         .social-btn {
             flex: 1;
-            padding: 12px;
+            padding: 11px;
             background-color: var(--input-dark);
             border: 1px solid var(--border-dark);
-            border-radius: 14px;
+            border-radius: 12px;
             cursor: pointer;
             display: flex;
             justify-content: center;
             align-items: center;
-            transition: all 0.3s ease;
-        }
-
-        .social-btn:hover {
-            border-color: var(--brand-yellow-bright);
-            background-color: #1A1E29;
-            transform: translateY(-2px);
         }
 
         .social-btn svg {
-            width: 20px;
-            height: 20px;
+            width: 18px;
+            height: 18px;
             fill: var(--text-main);
         }
 
         /* Footer */
         .signup-prompt {
             text-align: center;
-            margin-top: 26px;
-            font-size: 0.88rem;
+            margin-top: 22px;
+            font-size: 0.85rem;
             color: var(--text-sub);
         }
 
@@ -462,39 +379,41 @@
             text-decoration: none;
             font-weight: 800;
             margin-left: 4px;
-            transition: text-decoration 0.2s ease;
         }
 
-        .signup-prompt a:hover {
-            text-decoration: underline;
+        /* Adaptación extra para pantallas pequeñas o en modo horizontal */
+        @media (max-width: 380px) {
+            .login-card {
+                padding: 25px 18px;
+            }
+            .role-tab {
+                font-size: 0.68rem;
+                padding: 8px 1px;
+            }
+            .brand-title {
+                font-size: 1.5rem;
+            }
         }
     </style>
 </head>
 <body>
 
-    <!-- Luces de Fondo -->
+    <!-- Luces Neón de Fondo -->
     <div class="glow-orb glow-orb-1"></div>
     <div class="glow-orb glow-orb-2"></div>
 
     <div class="login-card">
         
-        <!-- ENCABEZADO CON REPARTIDOR EN MOTO CON CASCO -->
+        <!-- ENCABEZADO CON REPARTIDOR EN MOTO -->
         <div class="brand-header">
             <div class="moto-badge">
-                <!-- SVG Vectorial: Repartidor en Scooter con Casco y Mochila/Caja Express -->
                 <svg viewBox="0 0 24 24">
-                    <!-- Casco / Cabeza -->
                     <circle cx="15" cy="5" r="2.2"/>
-                    <!-- Cuerpo / Torso inclinándose -->
                     <path d="M12.5 8.5L9 11.5V15h2v-2.5l2.5-2 2.5 1.5V15h2v-3.5l-3.5-2.5-2-.5z"/>
-                    <!-- Scooter y Ruedas -->
                     <path d="M19 16.5c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 3c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1z"/>
                     <path d="M6 16.5c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 3c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1z"/>
-                    <!-- Chasis y Manubrio del Scooter -->
                     <path d="M17.5 15.5l1.5-4h-2.5l-1 2.5H11l-3 2H5v1.5h12.5z"/>
-                    <!-- Caja de Reparto Express Trasera -->
                     <rect x="3" y="9" width="4.5" height="5" rx="1" fill="currentColor"/>
-                    <!-- Líneas de Velocidad -->
                     <path d="M1 8h2m-3 3h2.5M.5 14h2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
                 </svg>
             </div>
@@ -503,7 +422,7 @@
         </div>
 
         <!-- SELECCIÓN DE PERFIL DE ACCESO -->
-        <span class="role-section-label">Selecciona tu perfil de acceso:</span>
+        <span class="role-section-label">Selecciona tu perfil:</span>
         <div class="role-tabs">
             <button type="button" class="role-tab active" onclick="setRole('cliente')">
                 <div class="role-icon-box">
@@ -513,7 +432,6 @@
             </button>
             <button type="button" class="role-tab" onclick="setRole('repartidor')">
                 <div class="role-icon-box">
-                    <!-- Icono Repartidor Moto -->
                     <svg viewBox="0 0 24 24">
                         <circle cx="15" cy="5" r="2"/>
                         <path d="M12.5 8.5L9 11.5V15h2v-2.5l2.5-2 2.5 1.5V15h2v-3.5l-3.5-2.5z"/>
