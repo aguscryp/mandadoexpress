@@ -1,0 +1,1209 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mandado Express | Inicio</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@1,800;1,900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Leaflet.js CSS (Mapa Interactivo Gratuito) -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+    <style>
+        :root {
+            --brand-yellow: #FFC107;
+            --brand-yellow-bright: #FFD700;
+            --brand-yellow-glow: rgba(255, 215, 0, 0.25);
+            --bg-dark: #07080C;
+            --card-dark: #0F121C;
+            --card-inner: #161A26;
+            --input-dark: #121622;
+            --border-dark: rgba(255, 215, 0, 0.18);
+            --border-active: #FFD700;
+            --text-main: #FFFFFF;
+            --text-sub: #9EA4B5;
+            --green-open: #00E676;
+            --red-closed: #FF5252;
+            --orange-tag: #FF9100;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            min-height: 100vh;
+            padding-bottom: 95px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+            padding: 16px 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* --- HEADER PRINCIPAL --- */
+        .app-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: 18px;
+        }
+
+        .brand-logo-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .logo-icon-box {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, var(--brand-yellow-bright) 0%, var(--brand-yellow) 100%);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px var(--brand-yellow-glow);
+        }
+
+        .logo-icon-box svg {
+            width: 26px;
+            height: 26px;
+            fill: #000;
+        }
+
+        .brand-name {
+            font-size: 1.35rem;
+            font-weight: 800;
+            color: #FFFFFF;
+            letter-spacing: -0.3px;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            position: relative;
+        }
+
+        .icon-btn {
+            width: 42px;
+            height: 42px;
+            border-radius: 14px;
+            background: var(--card-dark);
+            border: 1px solid var(--border-dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--brand-yellow-bright);
+            cursor: pointer;
+            position: relative;
+            transition: all 0.2s ease;
+        }
+
+        .icon-btn svg {
+            width: 20px;
+            height: 20px;
+            fill: var(--brand-yellow-bright);
+        }
+
+        .notification-dot {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 8px;
+            height: 8px;
+            background-color: var(--brand-yellow-bright);
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--brand-yellow-bright);
+            display: none;
+        }
+
+        .notification-dot.active {
+            display: block;
+        }
+
+        .avatar-btn {
+            width: 42px;
+            height: 42px;
+            border-radius: 14px;
+            border: 1.5px solid var(--brand-yellow-bright);
+            background: var(--card-dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            text-decoration: none;
+        }
+
+        .avatar-btn svg {
+            width: 22px;
+            height: 22px;
+            fill: var(--brand-yellow-bright);
+        }
+
+        /* --- NOTIFICACIONES POPOVER --- */
+        .notif-popover {
+            position: absolute;
+            top: 54px;
+            right: 0;
+            width: 280px;
+            background: var(--card-dark);
+            border: 1px solid var(--border-active);
+            border-radius: 20px;
+            padding: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9), 0 0 20px var(--brand-yellow-glow);
+            z-index: 150;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.25s ease;
+        }
+
+        .notif-popover.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .notif-text {
+            font-size: 0.82rem;
+            color: #FFF;
+            line-height: 1.4;
+        }
+
+        /* --- TARJETA DE UBICACIÓN --- */
+        .location-card {
+            background: var(--card-dark);
+            border: 1px solid var(--border-dark);
+            border-radius: 24px;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+        }
+
+        .location-card:hover {
+            border-color: var(--border-active);
+            box-shadow: 0 8px 25px var(--brand-yellow-glow);
+        }
+
+        .location-left {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            flex: 1;
+            padding-right: 12px;
+        }
+
+        .location-pin-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 12px;
+            background: rgba(255, 215, 0, 0.12);
+            border: 1px solid var(--border-dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .location-pin-icon svg {
+            width: 20px;
+            height: 20px;
+            fill: var(--brand-yellow-bright);
+        }
+
+        .location-text-group {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .location-header-row {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .location-title {
+            font-size: 1.05rem;
+            font-weight: 800;
+            color: #FFFFFF;
+        }
+
+        .location-header-row svg {
+            width: 18px;
+            height: 18px;
+            fill: var(--text-sub);
+        }
+
+        .location-address-text {
+            font-size: 0.82rem;
+            color: var(--text-sub);
+            font-weight: 500;
+            line-height: 1.3;
+        }
+
+        .location-map-thumb {
+            width: 90px;
+            height: 80px;
+            border-radius: 16px;
+            background: #181C28;
+            border: 1px solid var(--border-dark);
+            overflow: hidden;
+            flex-shrink: 0;
+            position: relative;
+        }
+
+        .location-map-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.85;
+        }
+
+        .location-map-thumb .map-badge {
+            position: absolute;
+            bottom: 4px;
+            left: 4px;
+            right: 4px;
+            background: rgba(15, 18, 28, 0.9);
+            font-size: 0.62rem;
+            font-weight: 700;
+            color: var(--brand-yellow-bright);
+            text-align: center;
+            padding: 2px 0;
+            border-radius: 6px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* --- BARRA BÚSQUEDA SUAVE ANIMADA (SIN MOVER EL RESTO) --- */
+        .search-bar-wrapper {
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease, margin-bottom 0.3s ease;
+            margin-bottom: 0;
+        }
+
+        .search-bar-wrapper.active {
+            max-height: 70px;
+            opacity: 1;
+            margin-bottom: 20px;
+        }
+
+        .search-input-wrap {
+            position: relative;
+        }
+
+        .search-input-wrap input {
+            width: 100%;
+            padding: 13px 16px 13px 44px;
+            background: var(--input-dark);
+            border: 1px solid var(--border-dark);
+            border-radius: 16px;
+            color: #FFF;
+            font-size: 0.9rem;
+            outline: none;
+            transition: border-color 0.2s ease;
+        }
+
+        .search-input-wrap input:focus {
+            border-color: var(--brand-yellow-bright);
+        }
+
+        .search-input-wrap svg {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 18px;
+            height: 18px;
+            fill: var(--text-sub);
+        }
+
+        /* --- CATEGORÍAS TIPO PILL HORIZONTAL --- */
+        .categories-scroll {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+            margin-bottom: 24px;
+            scrollbar-width: none;
+        }
+
+        .categories-scroll::-webkit-scrollbar {
+            display: none;
+        }
+
+        .category-pill {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            background: var(--card-dark);
+            border: 1px solid var(--border-dark);
+            border-radius: 18px;
+            text-decoration: none;
+            color: var(--text-main);
+            font-size: 0.85rem;
+            font-weight: 700;
+            white-space: nowrap;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .category-pill svg {
+            width: 18px;
+            height: 18px;
+            fill: var(--brand-yellow-bright);
+        }
+
+        .category-pill.active {
+            background: linear-gradient(135deg, var(--brand-yellow-bright) 0%, var(--brand-yellow) 100%);
+            color: #000;
+            border-color: var(--brand-yellow-bright);
+            box-shadow: 0 4px 15px var(--brand-yellow-glow);
+        }
+
+        .category-pill.active svg {
+            fill: #000;
+        }
+
+        /* --- SECCIÓN ENCABEZADO --- */
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 14px;
+        }
+
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: #FFF;
+        }
+
+        .see-all-btn {
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: var(--brand-yellow-bright);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* --- GRID DE TIENDAS CERCANAS --- */
+        .stores-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+            gap: 16px;
+        }
+
+        .store-card {
+            background: var(--card-dark);
+            border: 1px solid var(--border-dark);
+            border-radius: 24px;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            text-decoration: none;
+            color: var(--text-main);
+            transition: all 0.25s ease;
+            cursor: pointer;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.5);
+        }
+
+        .store-card:hover {
+            border-color: var(--border-active);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px var(--brand-yellow-glow);
+        }
+
+        .store-img-wrapper {
+            width: 100%;
+            height: 125px;
+            border-radius: 18px;
+            background: var(--card-inner);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 215, 0, 0.1);
+        }
+
+        .store-img-wrapper svg.store-illustration {
+            width: 70px;
+            height: 70px;
+        }
+
+        .store-tag-badge {
+            position: absolute;
+            bottom: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 800;
+            white-space: nowrap;
+            background: rgba(255, 145, 0, 0.9);
+            color: #000;
+        }
+
+        .store-info {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            text-align: center;
+        }
+
+        .store-name {
+            font-size: 0.95rem;
+            font-weight: 800;
+            color: #FFF;
+        }
+
+        .store-meta-line {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            font-size: 0.75rem;
+            color: var(--text-sub);
+            font-weight: 600;
+        }
+
+        .rating-star {
+            color: var(--brand-yellow-bright);
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 2px;
+        }
+
+        .status-pill-btn {
+            align-self: center;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 0.72rem;
+            font-weight: 800;
+            text-transform: capitalize;
+            margin-top: 2px;
+        }
+
+        .status-pill-btn.open {
+            background: var(--brand-yellow-bright);
+            color: #000;
+        }
+
+        .status-pill-btn.pickup {
+            background: rgba(255, 215, 0, 0.15);
+            color: var(--brand-yellow-bright);
+            border: 1px solid var(--brand-yellow-bright);
+        }
+
+        .status-pill-btn.closed {
+            background: rgba(255, 82, 82, 0.15);
+            color: var(--red-closed);
+            border: 1px solid var(--red-closed);
+        }
+
+        .no-stores-msg {
+            text-align: center;
+            padding: 30px;
+            color: var(--text-sub);
+            font-size: 0.88rem;
+            grid-column: 1 / -1;
+        }
+
+        /* --- MODAL MAPA CON GEOLOCALIZACIÓN --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            z-index: 200;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .location-modal {
+            background: var(--card-dark);
+            border: 1px solid var(--border-active);
+            border-radius: 28px 28px 0 0;
+            width: 100%;
+            max-width: 480px;
+            padding: 24px 20px;
+            transform: translateY(100%);
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-overlay.active .location-modal {
+            transform: translateY(0);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .modal-title {
+            font-size: 1.1rem;
+            font-weight: 800;
+        }
+
+        .close-modal-btn {
+            background: var(--input-dark);
+            border: 1px solid var(--border-dark);
+            color: var(--text-sub);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+
+        .modal-body {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        #leafletMap {
+            width: 100%;
+            height: 240px;
+            border-radius: 18px;
+            border: 1px solid var(--border-active);
+        }
+
+        .btn-confirm-location {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, var(--brand-yellow-bright) 0%, var(--brand-yellow) 100%);
+            color: #000;
+            border: none;
+            border-radius: 16px;
+            font-size: 0.95rem;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 6px 18px var(--brand-yellow-glow);
+        }
+
+        .btn-gps {
+            background: var(--input-dark);
+            border: 1px solid var(--border-dark);
+            color: var(--text-main);
+            padding: 12px;
+            border-radius: 14px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: border-color 0.2s ease;
+        }
+
+        .btn-gps:hover {
+            border-color: var(--brand-yellow-bright);
+        }
+
+        .btn-gps svg {
+            width: 18px;
+            height: 18px;
+            fill: var(--brand-yellow-bright);
+        }
+
+        /* --- BARRA NAVEGACIÓN INFERIOR --- */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 72px;
+            background: rgba(15, 18, 28, 0.95);
+            backdrop-filter: blur(15px);
+            border-top: 1px solid var(--border-dark);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 100;
+            max-width: 480px;
+            margin: 0 auto;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            text-decoration: none;
+            color: var(--text-sub);
+            font-size: 0.72rem;
+            font-weight: 700;
+            background: none;
+            border: none;
+            cursor: pointer;
+            width: 25%;
+            position: relative;
+        }
+
+        .nav-item svg {
+            width: 22px;
+            height: 22px;
+            fill: var(--text-sub);
+            transition: all 0.2s ease;
+        }
+
+        .nav-item.active {
+            color: var(--brand-yellow-bright);
+        }
+
+        .nav-item.active svg {
+            fill: var(--brand-yellow-bright);
+        }
+
+        .badge-cart {
+            position: absolute;
+            top: -2px;
+            right: 28px;
+            background: var(--brand-yellow-bright);
+            color: #000;
+            font-size: 0.65rem;
+            font-weight: 900;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .footer-location-info {
+            text-align: center;
+            font-size: 0.72rem;
+            color: var(--text-sub);
+            margin-top: 20px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <!-- HEADER PRINCIPAL -->
+        <header class="app-header">
+            <a href="cartaexpress.html" class="brand-logo-title">
+                <div class="logo-icon-box">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M19 7c0-1.1-.9-2-2-2h-3v2h3v2.65L13.52 14H10V9H6c-2.21 0-4 1.79-4 4v3h2c0 1.66 1.34 3 3 3s3-1.34 3-3h4.48L19 10.35V7zM7 17c-.55 0-1-.45-1-1h2c0 .55-.45 1-1 1z"/>
+                        <path d="M5 6h5v2H5z"/>
+                        <circle cx="17" cy="16" r="2"/>
+                    </svg>
+                </div>
+                <h1 class="brand-name">Mandado Express</h1>
+            </a>
+
+            <div class="header-actions">
+                <button class="icon-btn" id="notifBtn" onclick="toggleNotificaciones(event)" aria-label="Notificaciones">
+                    <div class="notification-dot" id="notifDot"></div>
+                    <svg viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
+                </button>
+
+                <div class="notif-popover" id="notifPopover">
+                    <div class="notif-text" id="notifContent">No tienes notificaciones pendientes.</div>
+                </div>
+
+                <a href="perfil.html" class="avatar-btn" aria-label="Perfil">
+                    <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                </a>
+            </div>
+        </header>
+
+        <!-- TARJETA UBICACIÓN -->
+        <section class="location-card" onclick="abrirModalUbicacion()">
+            <div class="location-left">
+                <div class="location-pin-icon">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                </div>
+                <div class="location-text-group">
+                    <div class="location-header-row">
+                        <span class="location-title">¿Dónde te lo llevamos?</span>
+                        <svg viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
+                    </div>
+                    <span class="location-address-text" id="currentAddress">Obteniendo tu ubicación actual...</span>
+                </div>
+            </div>
+
+            <div class="location-map-thumb">
+                <img src="https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?w=300&auto=format&fit=crop&q=80" alt="Mapa">
+                <div class="map-badge" id="shortZoneLabel">Detectando...</div>
+            </div>
+        </section>
+
+        <!-- BUSCADOR ANIMADO (SLIDE DOWN / ANIMADO SIN MOVER EL LAYOUT) -->
+        <div class="search-bar-wrapper" id="searchContainer">
+            <div class="search-input-wrap">
+                <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+                <input type="text" id="searchInput" placeholder="Buscar locales o productos..." onkeyup="filtrarLocales()">
+            </div>
+        </div>
+
+        <!-- CATEGORÍAS TIPO PILL -->
+        <div class="categories-scroll" id="categoriesContainer">
+            <a href="javascript:void(0)" onclick="seleccionarCategoria('todas')" class="category-pill active" id="pill-todas">
+                <svg viewBox="0 0 24 24"><path d="M4 11h5V5H4v6zm0 7h5v-6H4v6zm6 0h5v-6h-5v6zm6 0h5v-6h-5v6zm-6-7h5V5h-5v6zm6-6v6h5V5h-5z"/></svg>
+                <span>Todas</span>
+            </a>
+            <a href="javascript:void(0)" onclick="seleccionarCategoria('almacen')" class="category-pill" id="pill-almacen">
+                <svg viewBox="0 0 24 24"><path d="M19 6h-2c0-2.76-2.24-5-5-5S7 3.24 7 6H5c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-7-3c1.66 0 3 1.34 3 3H9c0-1.66 1.34-3 3-3z"/></svg>
+                <span>Almacén</span>
+            </a>
+            <a href="javascript:void(0)" onclick="seleccionarCategoria('panchero')" class="category-pill" id="pill-panchero">
+                <svg viewBox="0 0 24 24"><path d="M18 6h-2c0-2.21-1.79-4-4-4S8 3.79 8 6H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2z"/></svg>
+                <span>Panchero</span>
+            </a>
+            <a href="javascript:void(0)" onclick="seleccionarCategoria('heladeria')" class="category-pill" id="pill-heladeria">
+                <svg viewBox="0 0 24 24"><path d="M12 2C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V22l4-2 4 2v-7.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7z"/></svg>
+                <span>Heladería</span>
+            </a>
+            <a href="javascript:void(0)" onclick="seleccionarCategoria('verduleria')" class="category-pill" id="pill-verduleria">
+                <svg viewBox="0 0 24 24"><path d="M17 8C8 10 59 16 17 8z"/></svg>
+                <span>Verdulería</span>
+            </a>
+        </div>
+
+        <!-- TIENDAS CERCANAS -->
+        <section>
+            <div class="section-header">
+                <h2 class="section-title">Tiendas cercanas</h2>
+                <a href="#" class="see-all-btn">
+                    <span>Ver todas</span>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="var(--brand-yellow-bright)"><path d="M5 13h11.86l-5.43 5.43 1.42 1.42L21.14 12l-8.29-8.29-1.42 1.42L16.86 11H5v2z"/></svg>
+                </a>
+            </div>
+
+            <div class="stores-grid" id="storesGrid">
+                <!-- Se puebla dinámicamente -->
+            </div>
+        </section>
+
+        <div class="footer-location-info" id="footerLocLabel">
+            Mostrando locales para tu zona
+        </div>
+
+    </div>
+
+    <!-- MODAL DE MAPA CON GEOLOCALIZACIÓN Y BUSCADOR -->
+    <div class="modal-overlay" id="locationModal">
+        <div class="location-modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Tu Ubicación Exacta</h3>
+                <button class="close-modal-btn" onclick="cerrarModalUbicacion()">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                <button class="btn-gps" onclick="obtenerUbicacionGPS(true)">
+                    <svg viewBox="0 0 24 24"><path d="M12 8c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm8.94 3c-.46-4.17-3.77-7.48-7.94-7.94V1h-2v2.06C6.83 3.52 3.52 6.83 3.06 11H1v2h2.06c.46 4.17 3.77 7.48 7.94 7.94V23h2v-2.06c4.17-.46 7.48-3.77 7.94-7.94H23v-2h-2.06z"/></svg>
+                    Centrar en mi posición GPS
+                </button>
+
+                <div id="leafletMap"></div>
+
+                <input type="text" id="modalAddressInput" style="width:100%; padding:12px; background:var(--input-dark); border:1px solid var(--border-dark); border-radius:14px; color:#FFF; outline:none;" placeholder="Dirección exactas...">
+
+                <button class="btn-confirm-location" onclick="guardarUbicacion()">Confirmar Ubicación</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- NAVEGACIÓN INFERIOR -->
+    <nav class="bottom-nav">
+        <a href="cartaexpress.html" class="nav-item active">
+            <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+            <span>Inicio</span>
+        </a>
+        <button class="nav-item" onclick="toggleBuscador()">
+            <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+            <span>Buscar</span>
+        </button>
+        <a href="carrito.html" class="nav-item">
+            <div class="badge-cart" id="cartBadge" style="display:none;">0</div>
+            <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
+            <span>Carrito</span>
+        </a>
+        <a href="perfil.html" class="nav-item">
+            <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+            <span>Perfil</span>
+        </a>
+    </nav>
+
+    <!-- Leaflet.js -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <script>
+        const API_BASE_URL = 'https://tu-backend-en-railway.up.railway.app/api';
+        const MAX_DISTANCIA_KM = 6.0;
+
+        let tiendasGlobales = [];
+        let categoriaSeleccionada = 'todas';
+        let mapInstance = null;
+        let markerInstance = null;
+
+        // Estado inicial de ubicación (GPS por defecto de San Juan)
+        let usuarioUbicacion = {
+            lat: -31.5375,
+            lng: -68.5364,
+            direccion: 'Detectando tu ubicación...',
+            departamento: 'Santa Lucía'
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            actualizarEstadoCarrito();
+            cargarUbicacionGuardada();
+            obtenerUbicacionGPS(false); // GPS Automático al entrar
+            cargarTiendas();
+        });
+
+        /* CARRITO SIN ELEMENTOS AL INICIO */
+        function actualizarEstadoCarrito() {
+            const carrito = JSON.parse(localStorage.getItem('mandado_express_carrito') || '[]');
+            const badge = document.getElementById('cartBadge');
+            const totalItems = carrito.reduce((sum, item) => sum + (item.cantidad || 1), 0);
+            
+            if (totalItems > 0) {
+                badge.textContent = totalItems;
+                badge.style.display = 'flex';
+            } else {
+                badge.style.display = 'none';
+            }
+        }
+
+        /* FÓRMULA HAAVERSINE PARA DISTANCIA EXACTA */
+        function calcularDistanciaKm(lat1, lon1, lat2, lon2) {
+            const R = 6371;
+            const dLat = (lat2 - lat1) * Math.PI / 180;
+            const dLon = (lon2 - lon1) * Math.PI / 180;
+            const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                      Math.sin(dLon/2) * Math.sin(dLon/2);
+            return R * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)));
+        }
+
+        /* GEOLOCALIZACIÓN AUTOMÁTICA Y REVERSE GEOCODING EN TIEMPO REAL */
+        function obtenerUbicacionGPS(centrarMapa = true) {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    pos => {
+                        const lat = pos.coords.latitude;
+                        const lng = pos.coords.longitude;
+                        actualizarCoord(lat, lng, centrarMapa);
+                    },
+                    err => {
+                        console.warn('Geolocalización no otorgada/disponible:', err.message);
+                        if (!localStorage.getItem('mandado_express_ubicacion')) {
+                            document.getElementById('currentAddress').textContent = 'Santa Lucía, San Juan';
+                        }
+                    },
+                    { enableHighAccuracy: true, timeout: 8000 }
+                );
+            }
+        }
+
+        async function actualizarCoord(lat, lng, centrarMapa = false) {
+            usuarioUbicacion.lat = lat;
+            usuarioUbicacion.lng = lng;
+
+            if (mapInstance && markerInstance) {
+                markerInstance.setLatLng([lat, lng]);
+                if (centrarMapa) mapInstance.setView([lat, lng], 16);
+            }
+
+            try {
+                const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`);
+                const data = await res.json();
+                if (data && data.address) {
+                    const addr = data.address;
+                    const calle = addr.road || addr.pedestrian || addr.suburb || 'Ubicación actual';
+                    const num = addr.house_number || '';
+                    const depto = addr.county || addr.city_district || addr.suburb || addr.town || addr.city || 'Santa Lucía';
+                    
+                    usuarioUbicacion.direccion = `${calle} ${num}`.trim();
+                    usuarioUbicacion.departamento = depto;
+
+                    document.getElementById('currentAddress').textContent = usuarioUbicacion.direccion + ' · ' + depto;
+                    document.getElementById('shortZoneLabel').textContent = depto;
+                    document.getElementById('modalAddressInput').value = usuarioUbicacion.direccion;
+                    document.getElementById('footerLocLabel').textContent = `Locales mostrados para ${depto}`;
+                }
+            } catch {
+                document.getElementById('currentAddress').textContent = `Lat: ${lat.toFixed(4)}, Lng: ${lng.toFixed(4)}`;
+            }
+
+            filtrarYRenderizarTiendas();
+        }
+
+        /* INICIALIZAR LEAFLET CON MARCADOR INTERACTIVO */
+        function inicializarMapa() {
+            if (mapInstance) return;
+            mapInstance = L.map('leafletMap').setView([usuarioUbicacion.lat, usuarioUbicacion.lng], 16);
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19
+            }).addTo(mapInstance);
+
+            const goldIcon = L.icon({
+                iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-gold.png',
+                shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+                iconSize: [25, 41],
+                iconAnchor: [12, 41]
+            });
+
+            markerInstance = L.marker([usuarioUbicacion.lat, usuarioUbicacion.lng], {
+                draggable: true,
+                icon: goldIcon
+            }).addTo(mapInstance);
+
+            markerInstance.on('dragend', function (e) {
+                const coord = e.target.getLatLng();
+                actualizarCoord(coord.lat, coord.lng, false);
+            });
+        }
+
+        function abrirModalUbicacion() {
+            document.getElementById('locationModal').classList.add('active');
+            document.getElementById('modalAddressInput').value = usuarioUbicacion.direccion;
+            setTimeout(() => {
+                inicializarMapa();
+                mapInstance.invalidateSize();
+            }, 300);
+        }
+
+        function cerrarModalUbicacion() {
+            document.getElementById('locationModal').classList.remove('active');
+        }
+
+        function guardarUbicacion() {
+            usuarioUbicacion.direccion = document.getElementById('modalAddressInput').value || usuarioUbicacion.direccion;
+            document.getElementById('currentAddress').textContent = usuarioUbicacion.direccion;
+            localStorage.setItem('mandado_express_ubicacion', JSON.stringify(usuarioUbicacion));
+            cerrarModalUbicacion();
+            filtrarYRenderizarTiendas();
+        }
+
+        function cargarUbicacionGuardada() {
+            const guardada = localStorage.getItem('mandado_express_ubicacion');
+            if (guardada) {
+                usuarioUbicacion = JSON.parse(guardada);
+                document.getElementById('currentAddress').textContent = usuarioUbicacion.direccion;
+                if(usuarioUbicacion.departamento) {
+                    document.getElementById('shortZoneLabel').textContent = usuarioUbicacion.departamento;
+                }
+            }
+        }
+
+        /* POPOVER Y BÚSQUEDA SUAVE ANIMADA */
+        function toggleNotificaciones(e) {
+            e.stopPropagation();
+            document.getElementById('notifPopover').classList.toggle('active');
+        }
+
+        function toggleBuscador() {
+            const wrapper = document.getElementById('searchContainer');
+            wrapper.classList.toggle('active');
+            if (wrapper.classList.contains('active')) {
+                setTimeout(() => document.getElementById('searchInput').focus(), 150);
+            }
+        }
+
+        function seleccionarCategoria(cat) {
+            categoriaSeleccionada = cat;
+            document.querySelectorAll('.category-pill').forEach(el => el.classList.remove('active'));
+            const activePill = document.getElementById(`pill-${cat}`);
+            if (activePill) activePill.classList.add('active');
+            filtrarYRenderizarTiendas();
+        }
+
+        async function cargarTiendas() {
+            try {
+                const res = await fetch(`${API_BASE_URL}/tiendas`);
+                if (res.ok) tiendasGlobales = await res.json();
+                else tiendasGlobales = obtenerDatosEjemplo();
+            } catch {
+                tiendasGlobales = obtenerDatosEjemplo();
+            }
+            filtrarYRenderizarTiendas();
+        }
+
+        /* FILTRADO DE LOCALES POR DEPARTAMENTO / SANTA LUCÍA Y DISTANCIA */
+        function filtrarYRenderizarTiendas() {
+            const searchVal = document.getElementById('searchInput').value.toLowerCase();
+            const deptoUsuarioNorm = normalizarTexto(usuarioUbicacion.departamento || '');
+
+            const procesadas = tiendasGlobales.map(t => ({
+                ...t,
+                distanciaKm: calcularDistanciaKm(usuarioUbicacion.lat, usuarioUbicacion.lng, t.lat, t.lng)
+            })).filter(t => {
+                const deptoTiendaNorm = normalizarTexto(t.departamento || 'Santa Lucía');
+                
+                // Muestra locales si coincide el departamento o si está dentro del radio cercano
+                const coincideDepartamento = deptoUsuarioNorm.includes(deptoTiendaNorm) || deptoTiendaNorm.includes(deptoUsuarioNorm);
+                const dentroRangoKm = t.distanciaKm <= MAX_DISTANCIA_KM;
+                
+                const perteneceAZona = coincideDepartamento || dentroRangoKm;
+                const coincideBusqueda = t.nombre.toLowerCase().includes(searchVal);
+                const coincideCat = categoriaSeleccionada === 'todas' || t.categoria === categoriaSeleccionada;
+
+                return perteneceAZona && coincideBusqueda && coincideCat;
+            });
+
+            renderizarGrid(procesadas);
+        }
+
+        function normalizarTexto(txt) {
+            return txt.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        }
+
+        function renderizarGrid(tiendas) {
+            const grid = document.getElementById('storesGrid');
+            grid.innerHTML = '';
+
+            if (tiendas.length === 0) {
+                grid.innerHTML = `<div class="no-stores-msg">No hay tiendas disponibles en ${usuarioUbicacion.departamento || 'tu zona'}.</div>`;
+                return;
+            }
+
+            tiendas.forEach(t => {
+                let badgeClass = 'open';
+                let badgeLabel = 'Abierto';
+
+                if (t.soloRetiro) {
+                    badgeClass = 'pickup';
+                    badgeLabel = 'Solo retiro';
+                } else if (!t.abierto) {
+                    badgeClass = 'closed';
+                    badgeLabel = 'Cerrado';
+                }
+
+                grid.innerHTML += `
+                    <div class="store-card" onclick="location.href='local.html?id=${t.id}'">
+                        <div class="store-img-wrapper">
+                            ${t.svgIllustration}
+                            ${t.tagEspecial ? `<span class="store-tag-badge">${t.tagEspecial}</span>` : ''}
+                        </div>
+                        <div class="store-info">
+                            <h3 class="store-name">${t.nombre}</h3>
+                            <div class="store-meta-line">
+                                <span class="rating-star">★ ${t.puntaje}</span>
+                                <span>·</span>
+                                <span>${t.tiempo} min</span>
+                                <span>·</span>
+                                <span>${t.costoEnvio}</span>
+                            </div>
+                            <button class="status-pill-btn ${badgeClass}">${badgeLabel}</button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function filtrarLocales() {
+            filtrarYRenderizarTiendas();
+        }
+
+        function obtenerDatosEjemplo() {
+            return [
+                {
+                    id: '1',
+                    nombre: 'Almacén del vecino',
+                    categoria: 'almacen',
+                    departamento: 'Santa Lucía',
+                    puntaje: '4.6',
+                    tiempo: '15-25',
+                    costoEnvio: '$300 envío',
+                    abierto: true,
+                    soloRetiro: false,
+                    tagEspecial: '',
+                    lat: -31.5360,
+                    lng: -68.5350,
+                    svgIllustration: `<svg viewBox="0 0 100 100" class="store-illustration"><rect x="20" y="35" width="60" height="45" rx="8" fill="none" stroke="#FFD700" stroke-width="4"/><path d="M15 35 L50 15 L85 35 Z" fill="none" stroke="#FFD700" stroke-width="4"/></svg>`
+                },
+                {
+                    id: '2',
+                    nombre: 'Panchero sin delivery',
+                    categoria: 'panchero',
+                    departamento: 'Santa Lucía',
+                    puntaje: '4.3',
+                    tiempo: '20-30',
+                    costoEnvio: '0.8 km',
+                    abierto: true,
+                    soloRetiro: true,
+                    tagEspecial: 'Solo retiro',
+                    lat: -31.5390,
+                    lng: -68.5380,
+                    svgIllustration: `<svg viewBox="0 0 100 100" class="store-illustration"><rect x="20" y="45" width="60" height="20" rx="10" fill="none" stroke="#FFD700" stroke-width="4"/><path d="M15 55 Q50 35 85 55" fill="none" stroke="#FF5252" stroke-width="3"/></svg>`
+                },
+                {
+                    id: '3',
+                    nombre: 'Heladería El Patron',
+                    categoria: 'heladeria',
+                    departamento: 'Santa Lucía',
+                    puntaje: '4.8',
+                    tiempo: '12-20',
+                    costoEnvio: '$250 envío',
+                    abierto: true,
+                    soloRetiro: false,
+                    tagEspecial: '',
+                    lat: -31.5420,
+                    lng: -68.5410,
+                    svgIllustration: `<svg viewBox="0 0 100 100" class="store-illustration"><path d="M50 80 L32 45 L68 45 Z" fill="none" stroke="#FFD700" stroke-width="4"/><circle cx="50" cy="35" r="16" fill="none" stroke="#FFD700" stroke-width="4"/></svg>`
+                }
+            ];
+        }
+    </script>
+</body>
+</html>
